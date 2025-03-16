@@ -1,0 +1,115 @@
+/* Navbar Base Styles */
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #242526;
+  color: white;
+  padding: 15px 20px;
+  position: fixed;
+  width: 100%;
+  top: 0;
+  left: 0;
+  box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+/* Left: Logo */
+.logo img {
+  height: 35px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.logo img:hover {
+  transform: scale(1.1);
+}
+
+/* Center: Page Title */
+.page-title {
+  font-size: 20px;
+  font-weight: bold;
+  text-transform: capitalize;
+}
+
+/* Right: Menu Icon */
+.menu {
+  position: relative;
+}
+
+.menu-icon {
+  font-size: 24px;
+  cursor: pointer;
+  padding: 5px 10px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 5px;
+  transition: background 0.3s;
+}
+
+.menu-icon:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Dropdown Menu */
+.dropdown {
+  position: absolute;
+  top: 40px;
+  right: 0;
+  background: #333;
+  width: 180px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: opacity 0.3s ease, transform 0.3s ease, visibility 0.3s;
+}
+
+.dropdown.open {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+/* Dropdown Links */
+.dropdown a,
+.dropdown button {
+  display: block;
+  color: white;
+  text-decoration: none;
+  padding: 12px;
+  border: none;
+  background: none;
+  width: 100%;
+  text-align: left;
+  font-size: 16px;
+  transition: background 0.3s ease;
+  cursor: pointer;
+}
+
+.dropdown a:hover,
+.dropdown button:hover {
+  background: #444;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .page-title {
+    font-size: 18px;
+  }
+
+  .dropdown {
+    width: 150px;
+  }
+
+  .menu-icon {
+    font-size: 22px;
+  }
+
+  .dropdown a,
+  .dropdown button {
+    font-size: 14px;
+    padding: 10px;
+  }
+}

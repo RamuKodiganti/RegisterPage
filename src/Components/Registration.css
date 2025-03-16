@@ -1,0 +1,239 @@
+/* Add this CSS to your project's CSS file or create a new one */
+
+/* Base styles and resets */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', sans-serif;
+  line-height: 1.6;
+}
+
+/* Registration page container */
+.registration-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+  padding: 20px;
+}
+
+/* Card styles */
+.registration-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 450px;
+  overflow: hidden;
+  padding: 40px;
+  transition: transform 0.3s ease;
+}
+
+.registration-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Card header */
+.card-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.card-header h2 {
+  color: #333;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.card-header p {
+  color: #666;
+  font-size: 16px;
+}
+
+/* Form styles */
+.registration-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.form-group label {
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+}
+
+.input-container {
+  position: relative;
+}
+
+.input-container input {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.input-container input:focus {
+  outline: none;
+  border-color: #5E5DF0;
+  box-shadow: 0 0 0 3px rgba(94, 93, 240, 0.1);
+}
+
+.input-container input::placeholder {
+  color: #aaa;
+}
+
+/* Submit button */
+.submit-button {
+  background: linear-gradient(90deg, #5E5DF0 0%, #7270da 100%);
+  border: none;
+  border-radius: 8px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  margin-top: 10px;
+  padding: 15px;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.submit-button:hover {
+  background: linear-gradient(90deg, #4b4bd0 0%, #5e5cc7 100%);
+  box-shadow: 0 6px 12px rgba(94, 93, 240, 0.2);
+}
+
+.submit-button:active {
+  transform: translateY(1px);
+}
+
+.submit-button.loading {
+  opacity: 0.8;
+  cursor: not-allowed;
+}
+
+.submit-button.loading::after {
+  content: "";
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 3px solid rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  border-top-color: white;
+  animation: spin 1s ease-in-out infinite;
+  top: calc(50% - 10px);
+  left: calc(50% + 60px);
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Login link */
+.login-link {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 14px;
+  color: #666;
+}
+
+.login-link a {
+  color: #5E5DF0;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.3s;
+}
+
+.login-link a:hover {
+  color: #4b4bd0;
+  text-decoration: underline;
+}
+
+/* Error message */
+.error-message {
+  background-color: rgba(255, 82, 82, 0.1);
+  border: 1px solid rgba(255, 82, 82, 0.3);
+  border-radius: 6px;
+  color: #ff5252;
+  font-size: 14px;
+  margin-bottom: 15px;
+  padding: 10px;
+  text-align: center;
+}
+
+/* Notification */
+.notification {
+  background-color: rgba(76, 175, 80, 0.9);
+  border-radius: 6px;
+  color: white;
+  font-size: 14px;
+  left: 50%;
+  opacity: 0;
+  padding: 12px 20px;
+  position: fixed;
+  text-align: center;
+  top: 20px;
+  transform: translateX(-50%) translateY(-20px);
+  transition: opacity 0.3s, transform 0.3s;
+  visibility: hidden;
+  z-index: 1000;
+}
+
+.notification.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+  visibility: visible;
+}
+
+/* Responsive styles */
+@media (max-width: 576px) {
+  .registration-card {
+    padding: 30px 20px;
+    border-radius: 10px;
+  }
+  
+  .card-header h2 {
+    font-size: 24px;
+  }
+  
+  .submit-button {
+    padding: 12px;
+  }
+  
+  .input-container input {
+    padding: 12px;
+    font-size: 15px;
+  }
+}
+
+/* Animation for the card */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.registration-card {
+  animation: fadeIn 0.5s ease forwards;
+}

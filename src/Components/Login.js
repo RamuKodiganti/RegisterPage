@@ -4,12 +4,25 @@ import { Link, useNavigate } from 'react-router-dom';
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [error, setError] = useState("");
+
   const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your login logic here
-    navigate('/blank'); // Redirect to a blank page after submission
+    const response = await fetch("http://127.0.0.1:5000/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.error);
+    } else {
+      navigate("/Dashboard");
+    }
   };
 
   return (
@@ -37,7 +50,9 @@ const Login = () => {
               required
             />
           </div>
-          <button type="submit" style={styles.submitButton}>Login</button>
+            <div style={styles.buttonContainer}>
+              <button style={styles.submitButton}>Login</button>
+            </div>
         </form>
         <p style={styles.footer}>
           Not registered yet? <Link to="/register" style={styles.link}>Create an account</Link>
@@ -53,11 +68,11 @@ const styles = {
     alignItems: 'center',
     justifyContent: 'center',
     height: '100vh',
-    backgroundColor: '#f0f2f5',
+    backgroundColor: '#CEE3D5',
     fontFamily: 'Arial, sans-serif',
   },
   card: {
-    backgroundColor: '#ffffff',
+    backgroundColor: '#FFFFFF',
     borderRadius: '8px',
     boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
     padding: '40px',
@@ -84,16 +99,46 @@ const styles = {
     border: '1px solid #ccc',
     fontSize: '16px',
   },
-  submitButton: {
-    padding: '10px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    fontSize: '16px',
+
+  submitButton : {
+    background: '#5E5DF0',
+    borderRadius: '999px',
+    boxShadow: '#5E5DF0 0 10px 20px -10px',
+    boxSizing: 'border-box',
+    color: '#FFFFFF',
     cursor: 'pointer',
-    marginTop: '10px',
+    fontFamily: 'Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif',
+    fontSize: '16px',
+    fontWeight: 700,
+    lineHeight: '24px',
+    opacity: 1,
+    outline: '0 solid transparent',
+    padding: '8px 18px',
+    userSelect: 'none',
+    WebkitUserSelect: 'none',
+    touchAction: 'manipulation',
+    width: 'fit-content',
+    wordBreak: 'break-word',
+    border: 0,
   },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+  },
+  // submitButton: {
+  //   padding: '10px',
+  //   backgroundColor: '#007bff',
+  //   color: 'white',
+  //   border: 'none',
+  //   borderRadius: '4px',
+  //   fontSize: '16px',
+  //   cursor: 'pointer',
+  //   marginTop: '10px',
+  // },
+
+
+
+  
   footer: {
     marginTop: '20px',
     color: '#666',

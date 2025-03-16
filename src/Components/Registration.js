@@ -1,166 +1,391 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
+import axios from 'axios';
 const Registration = () => {
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState(''); // State to store error messages
-  const navigate = useNavigate();
+const [username, setUsername] = useState('');
+const [email, setEmail] = useState('');
+const [password, setPassword] = useState('');
+const [confirmPassword, setConfirmPassword] = useState('');
+const [error, setError] = useState('');
+// const [showPopup, setShowPopup] = useState(false);
+const navigate = useNavigate();
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  // const formle= document.querySelector("form")
+  
+e.preventDefault();
 
-    // Validate password and confirm password
-    if (password !== confirmPassword) {
-      setError('Passwords do not match');
-      return; // Stop form submission if passwords don't match
-    }
+try {
+  const response = await fetch("http://127.0.0.1:5000/register", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      username,
+      email,
+      password,
+      confirm_password: confirmPassword,
+    }),
+  });
 
-    // Clear any previous errors
-    setError('');
+  const data = await response.json();
+  if (response.ok) {
+    alert("Registration Successful! Redirecting to Login...");
+    setTimeout(() => navigate("/login"), 1000); // Delay before navigating
+  } else {
+    alert(`Error: ${data.error}`);
+  }
+} catch (error) {
+  console.error("Error:", error);
+  alert("Failed to connect to the server.");
+}
 
-    // Add your registration logic here (e.g., API call)
-    console.log('Registration data:', { username, email, password });
 
-    // Redirect to a blank page after successful submission
-    navigate('/blank');
-  };
 
-  return (
-    <div style={styles.container}>
-      <div style={styles.card}>
-        <h2 style={styles.title}>Register Account</h2>
-        {error && <p style={styles.error}>{error}</p>} {/* Display error message */}
-        <form onSubmit={handleSubmit} style={styles.form}>
-          {/* <div style={styles.formGroup}>
-            <input
-              type="text"
-              value={username}
-              placeholder="Your Name"
-              onChange={(e) => setUsername(e.target.value)}
-              style={styles.input}
-              required
-            />
-          </div> */}
-          <div style={styles.formGroup}>
-            <input
-              type="text"
-              value={username}
-              placeholder="Username"
-              onChange={(e) => setUsername(e.target.value)}
-              style={styles.input}
-              required
-            />
-          </div>
-          <div style={styles.formGroup}>
-            <input
-              type="email"
-              value={email}
-              placeholder="Your Email"
-              onChange={(e) => setEmail(e.target.value)}
-              style={styles.input}
-              required
-            />
-          </div>
-          <div style={styles.formGroup}>
-            <input
-              type="password"
-              value={password}
-              placeholder="Password"
-              onChange={(e) => setPassword(e.target.value)}
-              style={styles.input}
-              required
-            />
-          </div>
-          <div style={styles.formGroup}>
-            <input
-              type="password"
-              value={confirmPassword}
-              placeholder="Confirm Password"
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              style={styles.input}
-              required
-            />
-          </div>
-          <button type="submit" style={styles.submitButton}>Register</button>
-        </form>
-        <p style={styles.footer}>
-          Already registered? <Link to="/login" style={styles.link}>Login</Link>
+
+if (password !== confirmPassword) {
+  setError('Passwords do not match');
+  return;
+}
+
+setError('');
+console.log('Registration data:', { username, email, password });
+// setShowPopup(true);
+};
+
+// const handleClosePopup = () => {
+// setShowPopup(false);
+// navigate('/register');
+// };
+
+return (
+<div style={styles.container}>
+<div style={styles.card}>
+<h2 style={styles.title}>Register Account</h2>
+{error && <p style={styles.error}>{error}</p>}
+<form onSubmit={handleSubmit} style={styles.form}>
+<div style={styles.formGroup}>
+<input
+type="text"
+value={username}
+placeholder="Username"
+onChange={(e) => setUsername(e.target.value)}
+style={styles.input}
+required
+/>
+</div>
+<div style={styles.formGroup}>
+<input
+type="email"
+value={email}
+placeholder="Your Email"
+onChange={(e) => setEmail(e.target.value)}
+style={styles.input}
+required
+/>
+</div>
+<div style={styles.formGroup}>
+<input
+type="password"
+value={password}
+placeholder="Password"
+onChange={(e) => setPassword(e.target.value)}
+style={styles.input}
+required
+/>
+</div>
+<div style={styles.formGroup}>
+<input
+type="password"
+value={confirmPassword}
+placeholder="Confirm Password"
+onChange={(e) => setConfirmPassword(e.target.value)}
+style={styles.input}
+required
+/>
+</div>
+<div style={styles.buttonContainer}>
+<button type="submit" style={styles.submitButton}>Register Account</button>
+</div>
+</form>
+<p style={styles.footer}>
+Already registered? <Link to="/login" style={styles.link}>Login</Link>
+</p>
+</div>
+
+
+
+  {/* {showPopup && (
+    <div style={styles.popup}>
+      <div style={styles.popupContent}>
+        <h3>Registration Successful!</h3>
+        <p>
+        Here to <Link to="/login" style={styles.link}>Login</Link>
         </p>
-
+        <button onClick={handleClosePopup} style={styles.closeButton}>Close</button>
       </div>
     </div>
-  );
+  )} */}
+</div>
+);
 };
 
 const styles = {
-  container: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    height: '100vh',
-    backgroundColor: '#f0f2f5',
-    fontFamily: 'Arial, sans-serif',
-  },
-  card: {
-    backgroundColor: '#ffffff',
-    borderRadius: '8px',
-    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-    padding: '40px',
-    width: '100%',
-    maxWidth: '400px',
-    textAlign: 'center',
-  },
-  title: {
-    fontSize: '24px',
-    marginBottom: '20px',
-    color: '#333',
-  },
-  form: {
-    display: 'flex',
-    flexDirection: 'column',
-  },
-  formGroup: {
-    marginBottom: '15px',
-  },
-  input: {
-    width: '100%',
-    padding: '10px',
-    borderRadius: '4px',
-    border: '1px solid #ccc',
-    fontSize: '16px',
-  },
-  submitButton: {
-    padding: '10px',
-    backgroundColor: '#007bff',
-    color: 'white',
-    border: 'none',
-    borderRadius: '4px',
-    fontSize: '16px',
-    cursor: 'pointer',
-    marginTop: '10px',
-  },
-  error: {
-    color: 'red',
-    marginBottom: '10px',
-  },
-  footer: {
-    marginTop: '20px',
-    color: '#666',
-  },
-  link: {
-    color: '#007bff',
-    textDecoration: 'none',
-  },
-  credit: {
-    marginTop: '20px',
-    fontSize: '12px',
-    color: '#999',
-  },
+container: {
+display: 'flex',
+alignItems: 'center',
+justifyContent: 'center',
+height: '100vh',
+backgroundColor: '#CEE3D5',
+fontFamily: 'Arial, sans-serif',
+backgroundSize: 'cover',
+},
+card: {
+backgroundColor: '#ffffff',
+borderRadius: '12px',
+boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
+padding: '40px',
+width: '100%',
+maxWidth: '400px',
+textAlign: 'center',
+},
+title: {
+fontSize: '28px',
+marginBottom: '20px',
+color: '#333',
+fontWeight: 'bold',
+},
+form: {
+display: 'flex',
+flexDirection: 'column',
+},
+formGroup: {
+marginBottom: '15px',
+},
+input: {
+width: '100%',
+padding: '12px',
+borderRadius: '6px',
+border: '1px solid #ccc',
+fontSize: '16px',
+},
+submitButton: {
+background: '#5E5DF0',
+borderRadius: '999px',
+boxShadow: '#5E5DF0 0 10px 20px -10px',
+boxSizing: 'border-box',
+color: '#FFFFFF',
+cursor: 'pointer',
+fontFamily: 'Inter, Helvetica, "Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols, -apple-system, system-ui, "Segoe UI", Roboto, "Helvetica Neue", "Noto Sans", sans-serif',
+fontSize: '16px',
+fontWeight: 700,
+lineHeight: '24px',
+opacity: 1,
+outline: '0 solid transparent',
+padding: '8px 18px',
+userSelect: 'none',
+WebkitUserSelect: 'none',
+touchAction: 'manipulation',
+width: 'fit-content',
+wordBreak: 'break-word',
+border: 0,
+},
+buttonContainer: {
+display: 'flex',
+justifyContent: 'center',
+},
+error: {
+color: 'red',
+marginBottom: '10px',
+},
+footer: {
+marginTop: '20px',
+color: '#666',
+},
+link: {
+color: '#4f46e5',
+textDecoration: 'none',
+},
+// popup: {
+// position: 'fixed',
+// top: 0,
+// left: 0,
+// right: 0,
+// bottom: 0,
+// backgroundColor: 'rgba(0, 0, 0, 0.5)',
+// display: 'flex',
+// alignItems: 'center',
+// justifyContent: 'center',
+// },
+// popupContent: {
+// backgroundColor: '#fff',
+// padding: '20px',
+// borderRadius: '8px',
+// textAlign: 'center',
+// },
+closeButton: {
+marginTop: '10px',
+padding: '8px 16px',
+backgroundColor: '#5E5DF0',
+color: '#fff',
+border: 'none',
+borderRadius: '4px',
+cursor: 'pointer',
+},
 };
 
 export default Registration;
 
 
+
+
+
+
+
+
+// import React, { useState } from 'react';
+// import { Link, useNavigate } from 'react-router-dom';
+// import './Registration.css';
+// const Registration = () => {
+//   const [username, setUsername] = useState('');
+//   const [email, setEmail] = useState('');
+//   const [password, setPassword] = useState('');
+//   const [confirmPassword, setConfirmPassword] = useState('');
+//   const [error, setError] = useState('');
+//   const [loading, setLoading] = useState(false);
+//   const navigate = useNavigate();
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+    
+//     if (password !== confirmPassword) {
+//       setError('Passwords do not match');
+//       return;
+//     }
+    
+//     setError('');
+//     setLoading(true);
+    
+//     try {
+//       const response = await fetch("http://127.0.0.1:5000/register", {
+//         method: "POST",
+//         headers: { "Content-Type": "application/json" },
+//         body: JSON.stringify({
+//           username,
+//           email,
+//           password,
+//           confirm_password: confirmPassword,
+//         }),
+//       });
+
+//       const data = await response.json();
+//       if (response.ok) {
+//         setLoading(false);
+//         showNotification("Registration Successful! Redirecting to Login...");
+//         setTimeout(() => navigate("/login"), 2000);
+//       } else {
+//         setLoading(false);
+//         setError(data.error || 'Registration failed');
+//       }
+//     } catch (error) {
+//       setLoading(false);
+//       console.error("Error:", error);
+//       setError("Failed to connect to the server. Please try again later.");
+//     }
+//   };
+
+//   const showNotification = (message) => {
+//     const notification = document.getElementById('notification');
+//     notification.innerText = message;
+//     notification.classList.add('show');
+//     setTimeout(() => {
+//       notification.classList.remove('show');
+//     }, 3000);
+//   };
+
+//   return (
+//     <div className="registration-container">
+//       <div className="registration-card">
+//         <div className="card-header">
+//           <h2>Create Account</h2>
+//           <p>Join our community today</p>
+//         </div>
+        
+//         {error && <div className="error-message">{error}</div>}
+        
+//         <div id="notification" className="notification"></div>
+        
+//         <form onSubmit={handleSubmit} className="registration-form">
+//           <div className="form-group">
+//             <label htmlFor="username">Username</label>
+//             <div className="input-container">
+//               <input
+//                 id="username"
+//                 type="text"
+//                 value={username}
+//                 onChange={(e) => setUsername(e.target.value)}
+//                 required
+//                 placeholder="Enter your username"
+//               />
+//             </div>
+//           </div>
+          
+//           <div className="form-group">
+//             <label htmlFor="email">Email</label>
+//             <div className="input-container">
+//               <input
+//                 id="email"
+//                 type="email"
+//                 value={email}
+//                 onChange={(e) => setEmail(e.target.value)}
+//                 required
+//                 placeholder="Enter your email"
+//               />
+//             </div>
+//           </div>
+          
+//           <div className="form-group">
+//             <label htmlFor="password">Password</label>
+//             <div className="input-container">
+//               <input
+//                 id="password"
+//                 type="password"
+//                 value={password}
+//                 onChange={(e) => setPassword(e.target.value)}
+//                 required
+//                 placeholder="Create a password"
+//               />
+//             </div>
+//           </div>
+          
+//           <div className="form-group">
+//             <label htmlFor="confirmPassword">Confirm Password</label>
+//             <div className="input-container">
+//               <input
+//                 id="confirmPassword"
+//                 type="password"
+//                 value={confirmPassword}
+//                 onChange={(e) => setConfirmPassword(e.target.value)}
+//                 required
+//                 placeholder="Confirm your password"
+//               />
+//             </div>
+//           </div>
+          
+//           <button 
+//             type="submit" 
+//             className={`submit-button ${loading ? 'loading' : ''}`}
+//             disabled={loading}
+//           >
+//             {loading ? 'Registering...' : 'Register Account'}
+//           </button>
+//         </form>
+        
+//         <div className="login-link">
+//           Already have an account? <Link to="/login">Login</Link>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Registration;
